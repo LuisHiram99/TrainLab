@@ -1,7 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from config import Settings
 
-app = FastAPI()
+settings = Settings()
+app = FastAPI(name=settings.app_name)
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -16,10 +19,10 @@ app.add_middleware(
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": f"Hello World, this is {settings.app_name}! and we are running in {settings.ENVIRONMENT} environment."}
 
 
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=settings.port)

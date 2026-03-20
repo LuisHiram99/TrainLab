@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from config import Settings
+from auth.auth import router as auth_router 
 
 settings = Settings()
 app = FastAPI(name=settings.app_name)
@@ -13,9 +14,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+api_route = "/api/v1"
 
-
-
+app.include_router(auth_router, prefix=api_route, tags=["auth"])
 
 @app.get("/")
 async def root():
